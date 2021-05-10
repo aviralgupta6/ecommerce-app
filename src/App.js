@@ -5,19 +5,43 @@ import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInOrUpPage from "./pages/sign-in-or-up/sign-in-or-up.component";
 import ContactPage from "./pages/contact/contact.component";
+import { Component } from "react";
+import { auth } from "./firebase/firebase.util";
 
-function App() {
-  return (
-    <div>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/shop" component={ShopPage} />
-        <Route path="/signin" component={SignInOrUpPage} />
-        <Route path="/contact" component={ContactPage} />
-      </Switch>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      currentUser: null,
+    };
+  }
+  unsubscribeFromAuth = null;
+  componentDidMount() {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
+      this.setState({ currentUser: user });
+
+      console.log(user);
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
+  render() {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUser} />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/shop" component={ShopPage} />
+          <Route path="/signin" component={SignInOrUpPage} />
+          <Route path="/contact" component={ContactPage} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
