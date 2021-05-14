@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router";
+import {  BrowserRouter as Router,  Switch,  Route} from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
@@ -9,8 +9,8 @@ import { Component } from "react";
 import { auth, createUserProfileDocument } from "./firebase/firebase.util";
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       currentUser: null,
@@ -42,6 +42,7 @@ class App extends Component {
 
   render() {
     return (
+      <Router>
       <div>
         <Header currentUser={this.state.currentUser} />
         <Switch>
@@ -51,6 +52,7 @@ class App extends Component {
           <Route path="/contact" component={ContactPage} />
         </Switch>
       </div>
+      </Router>
     );
   }
 }
