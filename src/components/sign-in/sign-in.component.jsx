@@ -20,6 +20,7 @@ class SignIn extends Component {
       email: "",
       password: "",
     });
+    this.props.history.push('/');
   };
 
   handleChange = (e) => {
